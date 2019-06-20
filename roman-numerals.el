@@ -4,29 +4,36 @@
 
 ;;; Code:
 
-(setq *roman-numerals/number-map*
-      '((1000 . ?M)
-        (500  . ?D)
-        (100  . ?C)
-        (50   . ?L)
-        (10   . ?X)
-        (5    . ?V)
-        (1    . ?I)))
-
-(setq *roman-numerals/special-arabic-numerals*
-      '(1000 500 100 50 10 5 1))
+(defvar *roman-numerals/number-map*
+      '((1000 . "M")
+        (900  . "CM")
+        (500  . "D")
+        (400  . "CD")
+        (100  . "C")
+        (90   . "XC")
+        (50   . "L")
+        (40   . "XL")
+        (10   . "X")
+        (9    . "IX")
+        (5    . "V")
+        (4    . "IV")
+        (1    . "I")))
 
 (defun to-roman (arabic-numeral)
   "Convert ARABIC-NUMERAL to its Roman numeral equivalent."
   (unless (= 0 arabic-numeral)
-    ))
+    (let ((floor-cell (roman-numerals/number-map-floor arabic-numeral)))
+      (concat
+       (cdr floor-cell)
+       (to-roman (- arabic-numeral (car floor-cell)))))))
 
-(defun roman-numerals/get-highest-single-char-roman-numeral (arabic-numeral)
-  "Determine the largest single-character roman numeral that is <= ARABIC-NUMERAL and return that and its arabic equivalent."
-  (unless (= 0 arabic-numeral)  ;; Caesar sez, what's a 0?
-    (assq
-     (seq-find (lambda (x) (> arabic-numeral x)) *roman-numerals/special-arabic-numerals*)
-     *roman-numerals/number-map*)))
+(defun roman-numerals/number-map-floor (arabic-numeral)
+  "Find the largest number in number-map that is <= ARABIC-NUMERAL and return the related cons cell."
+  (unless (= 0 arabic-numeral) ;; Caesar sez, what's a 0?
+    (let ((special-arabic-numerals (mapcar 'car *roman-numerals/number-map*)))
+      (assq
+       (seq-find (lambda (x) (>= arabic-numeral x)) special-arabic-numerals)
+       *roman-numerals/number-map*))))
 
 (provide 'roman-numerals)
 ;;; roman-numerals.el ends here
