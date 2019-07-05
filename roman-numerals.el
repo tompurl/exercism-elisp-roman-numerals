@@ -4,18 +4,22 @@
 
 ;;; Code:
 
-(setq *roman-numerals/number-map*
-      '((1000 . ?M)
-        (500  . ?D)
-        (100  . ?C)
-        (50   . ?L)
-        (10   . ?X)
-        (5    . ?V)
-        (1    . ?I)))
+(defvar *roman-numerals/number-map*
+      '((1000 . "M")
+        (900  . "CM")
+        (500  . "D")
+        (400  . "CD")
+        (100  . "C")
+        (90   . "XC")
+        (50   . "L")
+        (40   . "XL")
+        (10   . "X")
+        (9    . "IX")
+        (5    . "V")
+        (4    . "IV")
+        (1    . "I")))
 
-(setq *roman-numerals/special-arabic-numerals*
-      '(1000 500 100 50 10 5 1))
-
+<<<<<<< HEAD
 (defun roman-numerals/divide-with-remainder (numerator denominator)
   "Return the quotient and remainder when dividing NUMERATOR by DENOMINATOR."
   (list
