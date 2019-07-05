@@ -16,17 +16,19 @@
 (setq *roman-numerals/special-arabic-numerals*
       '(1000 500 100 50 10 5 1))
 
-(defun to-roman (arabic-numeral)
-  "Convert ARABIC-NUMERAL to its Roman numeral equivalent."
-  (unless (= 0 arabic-numeral)
-    ))
+(defun roman-numerals/divide-with-remainder (numerator denominator)
+  "Return the quotient and remainder when dividing NUMERATOR by DENOMINATOR."
+  (list
+   (/ numerator denominator)
+   (% numerator denominator)))
 
-(defun roman-numerals/get-highest-single-char-roman-numeral (arabic-numeral)
-  "Determine the largest single-character roman numeral that is <= ARABIC-NUMERAL and return that and its arabic equivalent."
-  (unless (= 0 arabic-numeral)  ;; Caesar sez, what's a 0?
-    (assq
-     (seq-find (lambda (x) (> arabic-numeral x)) *roman-numerals/special-arabic-numerals*)
-     *roman-numerals/number-map*)))
+(defun roman-numerals/digit-to-rn (digit)
+  "Convert a digit to its Roman Numeral equivalent"
+  (if (> (car (divide-with-remainder digit 1000)) 0)
+      (string (cdr (assoc 1000 *roman-numerals/number-map*))))
+  )
+
+(roman-numerals/digit-to-rn 3001)
 
 (provide 'roman-numerals)
 ;;; roman-numerals.el ends here
